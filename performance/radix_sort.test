@@ -1,0 +1,36 @@
+PREAMBLE = \
+    """
+    #include <thrust/sorting/radix_sort.h>
+    """
+
+INITIALIZE = \
+    """
+    thrust::host_vector<$KeyType>   h_keys = thrusttest::random_integers<$KeyType>($InputSize);
+    thrust::device_vector<$KeyType> d_keys = h_keys;
+    thrust::device_vector<$KeyType> d_keys_copy = d_keys;
+    
+    // test sort
+    thrust::sorting::radix_sort(h_keys.begin(), h_keys.end());
+    thrust::sorting::radix_sort(d_keys.begin(), d_keys.end());
+
+    ASSERT_EQUAL(d_keys, h_keys);
+    """
+
+TIME = \
+    """
+    thrust::copy(d_keys_copy.begin(), d_keys_copy.end(), d_keys.begin());
+    thrust::sorting::radix_sort(d_keys.begin(), d_keys.end());
+    """
+
+FINALIZE = \
+    """
+    RECORD_TIME();
+    RECORD_SORTING_RATE(double($InputSize));
+    """
+
+
+KeyTypes = ['char', 'short', 'int', 'long long', 'float', 'double']
+InputSizes = StandardSizes
+
+TestVariables = [('KeyType', KeyTypes), ('InputSize', InputSizes)]
+
