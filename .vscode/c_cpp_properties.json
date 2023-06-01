@@ -1,0 +1,12 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "windowsSdkVersion": "10.0.17763.0"
+        }
+    ],
+    "version": 4
+}
